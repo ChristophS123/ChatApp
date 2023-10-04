@@ -9,7 +9,7 @@
 <body>
 	<header>
 		<div class="p-4 text-center">
-			<h1 class="text-2xl font-bold">Registrieren</h1>
+			<h1 class="text-2xl font-bold">Anmelden</h1>
 		</div>
 	</header>
 </body>
@@ -19,14 +19,6 @@
 	  type="text"
 	  name="name"
 	  class="pl-10 pr-10 py-1 border rounded-md text-black focus:outline-none focus:ring focus:border-gray-400"
-	  placeholder="Name"
-	  required
-	/>
-	<br/>
-	<input
-	  type="text"
-	  name="name"
-	  class="mt-5 pl-10 pr-10 py-1 border rounded-md text-black focus:outline-none focus:ring focus:border-gray-400"
 	  placeholder="Email"
 	  required
 	/>
@@ -34,7 +26,7 @@
 	<input
 	  type="password"
 	  name="name"
-	  class="mt-5 pl-10 pr-10 py-1 border rounded-md text-black focus:outline-none focus:ring focus:border-gray-400"
+	  class="mt-3 pl-10 pr-10 py-1 border rounded-md text-black focus:outline-none focus:ring focus:border-gray-400"
 	  placeholder="Passwort"
 	  required
 	/>

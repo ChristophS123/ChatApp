@@ -9,6 +9,20 @@ export type Chat = {
 	senders:string[];
 };
 
+export type Message = {
+	id:string;
+	message:string,
+	sender:string,
+	date:string
+}
+
+export type Invitation = {
+	id:string,
+	email:string,
+	chat:string,
+	chatName:string
+}
+
 const db = new Map();
 
 export function getChats(userid: string) : Chat[] {
@@ -31,7 +45,7 @@ export function getChats(userid: string) : Chat[] {
 	return chats;
 }
 
-export function createChat(userIDs:string[]) {
+export function createChat(name:string[]) {
 	// TODO: Not yet implemented
 }
 
@@ -48,3 +62,42 @@ export function getChatByID(chatID:string) : Chat {
 		senders: ["Karina", "Peter"]
 	};
 }
+
+export function getMessagesByChat(chatID:string) : Message[] {
+	return [
+		{
+			id: "asasas",
+			message: "Du bist doof",
+			sender: "Username",
+			date: Date.now().toLocaleString()
+		},
+		{
+			id: "asasadsfa",
+			message: "Du bist doof",
+			sender: "Username",
+			date: Date.now().toString()
+		}
+	]
+}
+
+export function sendMessage(chatID:string, message:string) {
+	// TODO: Not yet implemented
+}
+
+export function loadInvitationFromUser() : Invitation[] {
+	return [
+		{
+			id: "asigas",
+			email: "email",
+			chat: "asasqas",
+			chatName: "CoolerName"
+		}
+	];
+}
+
+export function acceptInvitation(userID:string, clanID:string) {
+	
+}
+
+
+

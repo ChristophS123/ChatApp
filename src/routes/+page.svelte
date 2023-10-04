@@ -12,6 +12,14 @@
 		goto(`/add-chat`) ;
 	}
 
+	function loadChatPage(chatID:string) {
+		goto('/chat/' + chatID);
+	}
+
+	function loadInvitationPage() {
+		goto('/invitations');
+	}
+
 </script>
 
 <body>
@@ -23,7 +31,9 @@
 	
 	<ul>
 		{#each data.chats as chat}
-			<div class="bg-white p-6 bg-gray-900 bg-opacity-75 rounded-lg shadow-md mt-4 mr-8 ml-8 pt-8 pb-8">
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-static-element-interactions -->
+			<div on:click={loadChatPage(chat.id)} class="text-white p-6 bg-gray-400 bg-opacity-75 rounded-lg shadow-md mt-4 mr-8 ml-8 pt-8 pb-8">
 				{chat.name}
 			</div>
 		{/each}
@@ -34,6 +44,9 @@
 			<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 			  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
 			</svg>
+		</button> <br />
+		<button class="mt-3 bg-indigo-900  hover:bg-gray-800 text-white rounded-full p-4 shadow-md" on:click={loadInvitationPage}>
+			✉
 		</button>
 	</div>
 </body>

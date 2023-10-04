@@ -4,7 +4,9 @@ export function load({ params }) {
     console.log(params.slug);
     let slug = params.slug;
     let chat = db.getChatByID(slug);
+    let messages = db.getMessagesByChat(chat.id);
     return {
-        chat: chat
+        chat: chat,
+        messages: messages
     };
 }
