@@ -10,3 +10,7 @@ declare global {
 }
 
 export {};
+
+// Password: !Chat_App_123
+
+// Load invitations not finished yet

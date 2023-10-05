@@ -1,8 +1,8 @@
 import * as db from '$lib/server/database';
 
-export function load() {
+export async function load() {
     let userID:string = ""
-    let invitations = db.loadInvitationFromUser();
+    let invitations = await db.loadInvitationFromUser();
     return {
         invitations
     };

@@ -1,8 +1,13 @@
 import * as db from '$lib/server/database';
+import { supabase } from '$lib/supabaseClient';
+import { error, fail, redirect } from '@sveltejs/kit';
 
-export function load() {
-	console.log("test");
+export async function load() {
+
+	const userID = (await supabase.auth.getUser()).data.user?.id.toString();
+	if(userID == null)
+		throw redirect(307, '/signin');
 	return {
-		chats: db.getChats("asa") ?? []
+		chats: await db.getChats(userID) ?? []
 	};
 }

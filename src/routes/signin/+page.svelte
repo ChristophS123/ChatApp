@@ -1,8 +1,6 @@
-<script>
+<script lang=ts>
+	export let form;
 
-	function handleSubmit() {
-
-	}
 
 </script>
 
@@ -12,12 +10,14 @@
 			<h1 class="text-2xl font-bold">Anmelden</h1>
 		</div>
 	</header>
-</body>
 
-<form on:submit={handleSubmit} class="mt-4 p-2 pb-8 m-6 rounded-lg pt-8 text-white bg-gray-400">
+<form method="POST" action="?/signin" class="mt-4 p-2 pb-8 m-6 rounded-lg pt-8 text-white bg-gray-400">
+	{#if form?.error}
+		<p>Fehler bei der Anmeldung</p>
+	{/if}
 	<input
 	  type="text"
-	  name="name"
+	  name="email"
 	  class="pl-10 pr-10 py-1 border rounded-md text-black focus:outline-none focus:ring focus:border-gray-400"
 	  placeholder="Email"
 	  required
@@ -25,7 +25,7 @@
 	<br/>
 	<input
 	  type="password"
-	  name="name"
+	  name="password"
 	  class="mt-3 pl-10 pr-10 py-1 border rounded-md text-black focus:outline-none focus:ring focus:border-gray-400"
 	  placeholder="Passwort"
 	  required
@@ -37,6 +37,8 @@
 	  Erstellen
 	</button>
 </form>
+
+</body>
 
 <style>
 	header {

@@ -14,10 +14,6 @@
 
     let message = "";
 
-    function sendMessage() {
-
-    }
-
     function loadAdminPanel() {
         goto('../settings/' + data.chat.id);
     }
@@ -41,18 +37,22 @@
             </div>
         {/each}
     </div>
-    <div class="flex items-center p-4 mt-16">
+    <form method="POST" action="?/send" class="flex items-center p-4 mt-16">
         <input
           type="text"
+          id="message"
+          name="message"
           class="flex-grow px-4 py-2 border rounded-l-lg focus:outline-none focus:ring focus:border-blue-300"
           placeholder="Nachricht eingeben..."
-          bind:value={message}/>
-        <button
-          class="px-4 py-2 bg-gray-500 text-white rounded-r-lg hover:bg-gray-600 transition duration-300"
-          on:click={sendMessage}>
+          required/>
+        <button 
+          name="submit"
+          id="submit"
+          type="submit"
+          class="px-4 py-2 bg-gray-500 text-white rounded-r-lg hover:bg-gray-600 transition duration-300">
           Senden
         </button>
-    </div>
+    </form>
 </body>
 
 <style>

@@ -33,7 +33,7 @@
 		{#each data.chats as chat}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
-			<div on:click={loadChatPage(chat.id)} class="text-white p-6 bg-gray-400 bg-opacity-75 rounded-lg shadow-md mt-4 mr-8 ml-8 pt-8 pb-8">
+			<div on:click={() =>loadChatPage(chat.id)} class="text-white p-6 bg-gray-400 bg-opacity-75 rounded-lg shadow-md mt-4 mr-8 ml-8 pt-8 pb-8">
 				{chat.name}
 			</div>
 		{/each}
