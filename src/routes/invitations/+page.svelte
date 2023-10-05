@@ -8,8 +8,8 @@
 
     export let data:Data;
 
-    function acceptInvitation(invID:string) {
-
+    async function acceptInvitation(invID:string) {
+        
     }
 
     function denyInvitation(invID:string) {
@@ -27,7 +27,7 @@
     <div class="bg-gray-400 m-5 rounded-lg shadow-md text-white">
         {#each data.invitations as invitation}
             <div class="mt-5 m-5 rounded-lg p-4 shadow-md">
-                {invitation.chat} <br />
+                {invitation.chatName} <br />
                 <button class="mr-3" on:click={acceptInvitation(invitation.id)}>Akzeptieren</button>
                 <button class="ml-3" on:click={denyInvitation(invitation.id)}>Ablehnen</button>
             </div>

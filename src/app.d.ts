@@ -13,4 +13,9 @@ export {};
 
 // Password: !Chat_App_123
 
-// Load invitations not finished yet
+// TODOS:
+
+// Accept and deny invitations
+// Leave Chats
+// Back Buttons
+// SignOut

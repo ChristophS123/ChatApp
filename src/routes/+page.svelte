@@ -48,6 +48,7 @@
 		<button class="mt-3 bg-indigo-900  hover:bg-gray-800 text-white rounded-full p-4 shadow-md" on:click={loadInvitationPage}>
 			✉
 		</button>
+		
 	</div>
 </body>
 

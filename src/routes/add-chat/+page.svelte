@@ -1,13 +1,6 @@
 <script>
 	import { goto } from "$app/navigation";
 
-	let name = '';
-
-	async function handleSubmit() {
-		// TODO: Save
-		goto('/');
-	}
-
 </script>
 
 <body>
@@ -16,7 +9,7 @@
 			<h1 class="text-2xl font-bold">Chat erstellen</h1>
 		</div>
 	</header>
-	<form on:submit={handleSubmit} class="mt-4 p-2 pb-8 m-6 rounded-lg pt-8 text-white bg-gray-400">
+	<form method="POST" action="?/create" class="mt-4 p-2 pb-8 m-6 rounded-lg pt-8 text-white bg-gray-400">
 		<input
 		  type="text"
 		  name="name"

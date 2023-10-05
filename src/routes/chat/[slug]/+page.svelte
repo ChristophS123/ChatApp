@@ -4,6 +4,7 @@
 
     import type { Chat } from "$lib/server/database";
     import type { Message } from "$lib/server/database";
+	import { supabase } from "$lib/supabaseClient";
 
     type Data = {
 		chat: Chat;
@@ -12,11 +13,30 @@
 
     export let data:Data;
 
+    let messages:Message[] = data.messages;
+
     let message = "";
 
     function loadAdminPanel() {
         goto('../settings/' + data.chat.id);
     }
+
+    const channel = supabase
+    .channel('schema-db-changes')
+    .on(
+        'postgres_changes',
+        {
+        event: 'INSERT',
+        schema: 'public',
+        },
+        (payload:any) => {
+            console.log(payload.new.id + " " + data.chat.id);
+            if(payload.new.chatID == data.chat.id)
+                messages = [...messages, payload.new];
+        }
+    )
+    .subscribe()
+
 
 </script>
 
@@ -28,7 +48,7 @@
 		</div>
     </header>
     <div class="messages">
-        {#each data.messages as message}
+        {#each messages as message}
             <div class="chat chat-start mt-3">
                 <div class="chat-bubble p-5 bg-gray-400 text-white shadow-md ml-3">
                     <p class="font-semibold mb-1">{message.sender}</p>

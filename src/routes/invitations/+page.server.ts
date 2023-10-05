@@ -7,3 +7,9 @@ export async function load() {
         invitations
     };
 }
+
+export const actions = {
+	accept: async ({ request }) => {
+        console.log(request.body);
+	}
+};

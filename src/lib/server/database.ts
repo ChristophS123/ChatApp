@@ -27,7 +27,8 @@ export type Invitation = {
 export type User = {
 	id:string,
 	name:string,
-	chatIDs:string
+	chatIDs:string,
+	email:string
 }
 
 const db = new Map();
@@ -42,8 +43,29 @@ export async function getChats(userID:string) : Promise<Chat[]> {
 	return chats;
 }
 
-export async function createChat(name:string[]) {
-	
+export async function createChat(name:string) {
+	let id:string = randomUUID();
+	let chat:Chat = {
+		id: id,
+		name: name
+	}
+	await supabase.from('chats').insert(chat);
+	let creatorID:string = (await supabase.auth.getUser()).data.user?.id.toString()!;
+	await addUserToChat(creatorID, id);
+}
+
+export async function addUserToChat(userID:string, chatID:string) {
+	const data:any = await supabase.from('users').select('chatIDs').eq('id', userID);
+	let chatIDs = data.data[0].chatIDs;
+	if(chatIDs == "") {
+		chatIDs = chatID;
+	} else {
+		chatIDs += "," + chatID;
+	}
+	let updatedData = {
+		chatIDs: chatIDs
+	}
+	await supabase.from('users').update(updatedData).eq('id', userID);
 }
 
 export function deleteTodo(chatID:string) {
@@ -88,8 +110,23 @@ export async function loadInvitationFromUser() : Promise<Invitation[]> {
 	return data;
 }
 
-export function acceptInvitation(userID:string, clanID:string) {
-	
+export async function acceptInvitation(invitationID:string) {
+	let invitation:Invitation = await getInvitationByID(invitationID);
+	await addUserToChat(invitation.reciverID, invitation.chatID);
+	await supabase.from('invitations').delete().eq('id', invitation.id);
+}
+
+export async function getInvitationByID(invitationID:string) : Promise<Invitation> {
+	const { data, error } = await supabase.from('invitations').select('*').eq("id", invitationID);
+	if(error || data == null) {
+		throw new Error("Error beim Laden des Users")
+	}
+	return data[0];
+}
+
+export async function denyInvitation(invitationID:string) {
+	let invitation:Invitation = await getInvitationByID(invitationID);
+	await supabase.from('invitations').delete().eq('id', invitation.id);
 }
 
 export async function signUp(email:string, password:string, name:string) {
@@ -100,18 +137,19 @@ export async function signUp(email:string, password:string, name:string) {
 		});
 		if(data.user == null)
 			throw new Error("Fehler beim registrieren.")
-		await createUserInDatabase(name, data.user.id)
+		await createUserInDatabase(name, data.user.id, email)
 	} catch (e) {
 		throw new Error("Fehler beim registrieren");
 	}
 	
 }
 
-export async function createUserInDatabase(name:string, userID:string) {
+export async function createUserInDatabase(name:string, userID:string, email:string) {
 	let tableUser:User = {
 		id: userID,
 		name: name,
-		chatIDs: ""
+		chatIDs: "",
+		email: email
 	}
  	const { error } = await supabase.from('users').insert(tableUser);
 	if(error)
@@ -130,6 +168,14 @@ export async function getUserByID(id:string) : Promise<User> {
 	return data[0];
 }
 
+export async function getUserByEmail(email:string) : Promise<User> {
+	const { data, error } = await supabase.from('users').select('*').eq("email", email);
+	if(error || data == null) {
+		throw new Error("Error beim Laden des Users")
+	}
+	return data[0];
+}
+
 export async function signIn(data:any) {
 	try {
 		const user = await supabase.auth.signInWithPassword({
@@ -141,5 +187,19 @@ export async function signIn(data:any) {
 		return null
 	}
 }
+
+export async function sendInvitation(reciverEmail:string, chatID:string) {
+	let chatName = (await getChatByID(chatID)).name;
+	let reciverID = (await getUserByEmail(reciverEmail)).id;
+	let invitation:Invitation = {
+		id: randomUUID(),
+		reciverID: reciverID,
+		chatID: chatID,
+		chatName: chatName
+	};
+	await supabase.from('invitations').insert(invitation);
+}
+
+
 
 
