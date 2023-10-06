@@ -2,7 +2,7 @@
 // rather than in memory. But for now, we cheat.
 
 import { supabase } from "$lib/supabaseClient";
-import { randomUUID, type UUID } from "crypto";
+import { v4 as uuidv4 } from 'uuid';
 
 export type Chat = {
 	id: string;
@@ -47,7 +47,7 @@ export async function getChats(userID:string) : Promise<Chat[]> {
 }
 
 export async function createChat(name:string) {
-	let id:string = randomUUID();
+	let id:string = uuidv4();
 	let chat:Chat = {
 		id: id,
 		name: name
@@ -92,7 +92,7 @@ export async function sendMessage(chatID:string, message:string) {
 	let username = (await getUserByID(((await supabase.auth.getSession()).data.session?.user.id!).toString()!)).name;
 	console.log(username)
 	let msgModel:Message = {
-		id: randomUUID(),
+		id: uuidv4(),
 		message: message,
 		sender: username,
 		created: Date.now().toString(),
@@ -192,7 +192,7 @@ export async function sendInvitation(reciverEmail:string, chatID:string) {
 	let chatName = (await getChatByID(chatID)).name;
 	let reciverID = (await getUserByEmail(reciverEmail)).id;
 	let invitation:Invitation = {
-		id: randomUUID(),
+		id: uuidv4(),
 		reciverID: reciverID,
 		chatID: chatID,
 		chatName: chatName
@@ -227,8 +227,8 @@ export async function getUsername() : Promise<string> {
 }
 
 export async function guestSignIn(name:string) {
-	let email:string = randomUUID() + "@mail.com";
-	let password:string = randomUUID();
+	let email:string = uuidv4() + "@mail.com";
+	let password:string = uuidv4();
 	signUp(email, password, name);
 	signIn({
 		email: email,
