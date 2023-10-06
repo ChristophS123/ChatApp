@@ -53,7 +53,7 @@ export async function createChat(name:string) {
 		name: name
 	}
 	await supabase.from('chats').insert(chat);
-	let creatorID:string = (await supabase.auth.getUser()).data.user?.id.toString()!;
+	let creatorID:string = ((await supabase.auth.getSession()).data.session?.user.id!).toString()!;
 	await addUserToChat(creatorID, id);
 }
 
@@ -89,7 +89,7 @@ export async function getMessagesByChat(chatID:string) : Promise<Message[]> {
 
 export async function sendMessage(chatID:string, message:string) {
 	console.log(message + " MSG")
-	let username = (await getUserByID((await supabase.auth.getUser()).data.user?.id.toString()!)).name;
+	let username = (await getUserByID(((await supabase.auth.getSession()).data.session?.user.id!).toString()!)).name;
 	console.log(username)
 	let msgModel:Message = {
 		id: randomUUID(),
@@ -102,7 +102,7 @@ export async function sendMessage(chatID:string, message:string) {
 }
 
 export async function loadInvitationFromUser() : Promise<Invitation[]> {
-	let userID = (await supabase.auth.getUser()).data.user?.id;
+	let userID = (await supabase.auth.getSession()).data.session?.user.id;
 	const { data, error } = await supabase.from('invitations').select('*').eq('reciverID', userID);
 	if(error || data == null)
 		throw new Error("Fehler beim Laden der Einladungen")
@@ -156,7 +156,7 @@ export async function createUserInDatabase(name:string, userID:string, email:str
 }
 
 export async function automaticSignIn() : Promise<boolean> {
-	return await supabase.auth.getUser() != null
+	return await supabase.auth.getSession() != null
 }
 
 export async function getUserByID(id:string) : Promise<User> {
@@ -201,7 +201,7 @@ export async function sendInvitation(reciverEmail:string, chatID:string) {
 }
 
 export async function leaveChat(chatID:string) {
-	let user:User = await getUserByID((await supabase.auth.getUser()).data.user?.id!);
+	let user:User = await getUserByID(((await supabase.auth.getSession()).data.session?.user.id!));
 	let chatIDs:string[] = user.chatIDs.split(",");
 	for(let i = 0; i < chatIDs.length; i++) {
 		if(chatIDs[i] == chatID)
@@ -222,7 +222,7 @@ export async function leaveChat(chatID:string) {
 }
 
 export async function getUsername() : Promise<string> {
-	let userID = (await supabase.auth.getUser()).data.user?.id!;
+	let userID = ((await supabase.auth.getSession()).data.session?.user.id!);
 	return (await getUserByID(userID)).name;
 }
 

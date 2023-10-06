@@ -3,8 +3,7 @@ import { supabase } from '$lib/supabaseClient';
 import { error, fail, redirect } from '@sveltejs/kit';
 
 export async function load() {
-
-	const userID = (await supabase.auth.getUser()).data.user?.id.toString();
+	const userID = await (await supabase.auth.getSession()).data.session?.user.id;
 	if(userID == null)
 		throw redirect(307, '/guest-signin');
 	return {
