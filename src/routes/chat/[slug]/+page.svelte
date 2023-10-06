@@ -57,10 +57,10 @@
 
 </script>
 
-<body>
+<body class="mx-auto">
     <header>
         <div class="p-4 text-center flex">
-            <button on:click={goBack}>🡸</button>
+            <button on:click={goBack}>←</button>
 			<h1 class="text-2xl flex-grow font-bold">{data.chat.name}</h1>
             <button on:click={loadAdminPanel} class="flex-grow">☰</button>
 		</div>

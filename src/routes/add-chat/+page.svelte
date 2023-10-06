@@ -7,10 +7,10 @@
 
 </script>
 
-<body>
+<body class="mx-auto">
 	<header>
 		<div class="p-4 text-center">
-			<button on:click={goBack}>🡸</button>
+			<button on:click={goBack}>←</button>
 			<h1 class="text-2xl font-bold">Chat erstellen</h1>
 		</div>
 	</header>
