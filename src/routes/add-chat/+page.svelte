@@ -1,11 +1,16 @@
 <script>
 	import { goto } from "$app/navigation";
 
+	function goBack() {
+		goto('/');
+	}
+
 </script>
 
 <body>
 	<header>
 		<div class="p-4 text-center">
+			<button on:click={goBack}>🡸</button>
 			<h1 class="text-2xl font-bold">Chat erstellen</h1>
 		</div>
 	</header>
@@ -35,5 +40,6 @@
 	}
 	body {
 		text-align: center;
+		max-width: 800px;
 	}
 </style>

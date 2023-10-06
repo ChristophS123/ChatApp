@@ -19,6 +19,9 @@ export const actions = {
         } catch(e) {
             return fail(303, {error:true})
         }
-		
-	}
+	},
+    leave: async () => {
+        await db.leaveChat(chatID);
+        throw redirect(303, '/');
+    }
 };

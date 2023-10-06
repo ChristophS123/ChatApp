@@ -1,4 +1,6 @@
 <script lang=ts>
+	import { goto } from '$app/navigation';
+
 
     export let form;
 
@@ -6,12 +8,19 @@
 		chatID: string
 	}
 
+  export let data:Data;
+
+  function goBack() {
+    goto('/chat/' + data.chatID);
+  }
+
 </script>
 
 <body>
     <header>
 		<div class="p-4 text-center">
-			<h1 class="text-2xl font-bold">Einladen</h1>
+      <button on:click={goBack}>🡸</button>
+			<h1 class="text-2xl font-bold">Einstellungen</h1>
 		</div>
 	</header>
   {#if form?.error}
@@ -32,7 +41,10 @@
       class="px-4 py-2 bg-gray-500 text-white rounded-r-lg hover:bg-gray-600 transition duration-300">
       Einladen
     </button>
-</form>
+  </form>
+  <form class="mt-8" method="POST" action="?/leave">
+    <button type="submit">Chat Verlassen</button>
+  </form>
 </body>
 
 <style>
@@ -45,6 +57,7 @@
 
 	body {
 		text-align: center;
+		max-width: 800px;
 	}
 
 </style>

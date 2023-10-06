@@ -35,6 +35,9 @@ const db = new Map();
 
 export async function getChats(userID:string) : Promise<Chat[]> {
 	let user:User = await getUserByID((userID))
+	if(user.chatIDs == "") {
+		return [];
+	}
 	let chatIDs:string[] = user.chatIDs.split(",");
 	let chats:Chat[] = [];
 	for await (const element of chatIDs) {
@@ -66,10 +69,6 @@ export async function addUserToChat(userID:string, chatID:string) {
 		chatIDs: chatIDs
 	}
 	await supabase.from('users').update(updatedData).eq('id', userID);
-}
-
-export function deleteTodo(chatID:string) {
-	// TODO: Not yet implemented
 }
 
 export async function getChatByID(chatID:string) : Promise<Chat> {
@@ -141,7 +140,6 @@ export async function signUp(email:string, password:string, name:string) {
 	} catch (e) {
 		throw new Error("Fehler beim registrieren");
 	}
-	
 }
 
 export async function createUserInDatabase(name:string, userID:string, email:string) {
@@ -154,6 +152,7 @@ export async function createUserInDatabase(name:string, userID:string, email:str
  	const { error } = await supabase.from('users').insert(tableUser);
 	if(error)
 		throw new Error("Fehler beim registrieren");
+	addUserToChat(userID, 'd1591013-d52b-4d2d-8411-b62b1a7eb2ba'); // Add to public chat
 }
 
 export async function automaticSignIn() : Promise<boolean> {
@@ -184,6 +183,7 @@ export async function signIn(data:any) {
 		});
 		return user;
 	} catch(e) {
+		console.log("Error: " + e)
 		return null
 	}
 }
@@ -200,6 +200,38 @@ export async function sendInvitation(reciverEmail:string, chatID:string) {
 	await supabase.from('invitations').insert(invitation);
 }
 
+export async function leaveChat(chatID:string) {
+	let user:User = await getUserByID((await supabase.auth.getUser()).data.user?.id!);
+	let chatIDs:string[] = user.chatIDs.split(",");
+	for(let i = 0; i < chatIDs.length; i++) {
+		if(chatIDs[i] == chatID)
+			chatIDs.splice(i, 1);
+	}
+	let newChatIDs = "";
+	chatIDs.forEach(element => {
+		if(newChatIDs == "") {
+			newChatIDs += element;
+		} else {
+			newChatIDs += "," + element;
+		}
+	});
+	let updatedData = {
+		chatIDs: newChatIDs
+	}
+	await supabase.from('users').update(updatedData).eq('id', user.id);
+}
 
+export async function getUsername() : Promise<string> {
+	let userID = (await supabase.auth.getUser()).data.user?.id!;
+	return (await getUserByID(userID)).name;
+}
 
-
+export async function guestSignIn(name:string) {
+	let email:string = randomUUID() + "@mail.com";
+	let password:string = randomUUID();
+	signUp(email, password, name);
+	signIn({
+		email: email,
+		password: password
+	});
+}

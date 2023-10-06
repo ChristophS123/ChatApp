@@ -6,7 +6,6 @@ export const actions = {
 	signin: async ({ request }) => {
 			const data = await request.formData();
 			let response = await db.signIn(data);
-			console.log(response);
 			if(response == null) {
 				return fail(303, {error:true})
 			} else {

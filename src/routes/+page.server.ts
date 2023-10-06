@@ -6,7 +6,7 @@ export async function load() {
 
 	const userID = (await supabase.auth.getUser()).data.user?.id.toString();
 	if(userID == null)
-		throw redirect(307, '/signin');
+		throw redirect(307, '/guest-signin');
 	return {
 		chats: await db.getChats(userID) ?? []
 	};

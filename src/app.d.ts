@@ -15,7 +15,4 @@ export {};
 
 // TODOS:
 
-// Accept and deny invitations
-// Leave Chats
-// Back Buttons
-// SignOut
+// Invitation

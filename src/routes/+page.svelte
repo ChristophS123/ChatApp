@@ -20,12 +20,17 @@
 		goto('/invitations');
 	}
 
+	function signOut() {
+		goto('/signout');
+	}
+
 </script>
 
 <body>
-	<header>
-		<div class="p-4 text-center">
-			<h1 class="text-2xl font-bold">Chat App</h1>
+	<header class="text-center">
+		<div class="p-4 text-center flex">
+			<button class="flex-row bg-red mr-20 ml-4" on:click={signOut}>↰</button>
+			<h1 class="text-2xl flex-row font-bold">Chat App</h1>
 		</div>
 	</header>
 	
@@ -63,6 +68,12 @@
 
 	body {
 		text-align: center;
+		max-width: 800px;
+	}
+
+	ul {
+		overflow: scroll;
+		height: 370px;
 	}
 
 	.add-area {

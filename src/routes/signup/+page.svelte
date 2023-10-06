@@ -1,4 +1,11 @@
 <script>
+	import { goto } from '$app/navigation';
+
+	export let form;
+
+	function loadSignInPage() {
+		goto('/signin');
+	}
 
 </script>
 
@@ -11,6 +18,12 @@
 </body>
 
 <form method="POST" action="?/signup" class="mt-4 p-2 pb-8 m-6 rounded-lg pt-8 text-white bg-gray-400">
+	{#if form?.error}
+		<p class="mt-3 p-2">Fehler bei beim registrieren</p>
+	{/if}
+	{#if form?.signup}
+		<p class="mt-3 p-2">Erfolgreich registriert. Du kannst dich nun anmelden</p>
+	{/if}
 	<input
 	  type="text"
 	  name="name"
@@ -34,12 +47,16 @@
 	  placeholder="Passwort"
 	  required
 	/>
+	<br/>
 	<button
 	  type="submit"
 	  class="mt-8 pr-24 pl-24 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-500 hover:text-white transition duration-300"
 	>
-	  Erstellen
+	  Registrieren
 	</button>
+	<p class="mt-8">
+		Du hast bereits ein Konto? <b><button on:click={loadSignInPage}>*Anmelden</button></b>
+	</p>
 </form>
 
 <style>

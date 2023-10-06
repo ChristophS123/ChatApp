@@ -8,9 +8,11 @@ export async function load({ params }) {
     chatID = slug
     let chat = await db.getChatByID(slug);
     let messages = await db.getMessagesByChat(chat.id);
+    let username = await db.getUsername();
     return {
         chat: chat,
         messages: messages,
+        username: username
     };
 }
 
